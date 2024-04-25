@@ -191,6 +191,27 @@ class Recommender:
         output += f"Most Popular Genre: {max(genre_dict, key=genre_dict.get)}\n"
         return output
 
+    def getMovieRating(self):
+        rate_dict = {}
+        for key in self.__shows:
+            if self.__shows[key].get_type() == 'Movie':
+                if self.__shows[key].get_rating() not in rate_dict:
+                    rate_dict[self.__shows[key].get_rating()] = 1
+                else:
+                    rate_dict[self.__shows[key].get_rating()] += 1
+
+        return rate_dict.keys()
+
+    def getMovieRatingpercount(self):
+        rate_dict = {}
+        for key in self.__shows:
+            if self.__shows[key].get_type() == 'Movie':
+                if self.__shows[key].get_rating() not in rate_dict:
+                    rate_dict[self.__shows[key].get_rating()] = 1
+                else:
+                    rate_dict[self.__shows[key].get_rating()] += 1
+        return rate_dict.values()
+
     def getTVStats(self):
         # Rating for tv shows (G, PG, R, etc…) and the number of times a particular rating appears
         # as a percentage of all of the ratings for tv shows, with two decimals of precision
@@ -234,6 +255,26 @@ class Recommender:
         output += f"Most Prolific Actor: {max(actor_dict, key=actor_dict.get)}\n"
         output += f"Most Popular Genre: {max(genre_dict, key=genre_dict.get)}\n"
         return output
+
+    def getTVRating(self):
+        rate_dict = {}
+        for key in self.__shows:
+            if self.__shows[key].get_type() == 'TV Show':
+                if self.__shows[key].get_rating() not in rate_dict:
+                    rate_dict[self.__shows[key].get_rating()] = 1
+                else:
+                    rate_dict[self.__shows[key].get_rating()] += 1
+        return rate_dict.keys()
+
+    def getTVRatingpercount(self):
+        rate_dict = {}
+        for key in self.__shows:
+            if self.__shows[key].get_type() == 'TV Show':
+                if self.__shows[key].get_rating() not in rate_dict:
+                    rate_dict[self.__shows[key].get_rating()] = 1
+                else:
+                    rate_dict[self.__shows[key].get_rating()] += 1
+        return rate_dict.values()
 
     def getBookStats(self):
         # The average page count, with two decimals of precision

@@ -9,7 +9,9 @@ from tkinter import messagebox
 from tkinter import ttk
 from tkinter.scrolledtext import ScrolledText
 from tkinter.ttk import Combobox
-
+from matplotlib.figure import Figure
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+import numpy as np
 from PIL import Image, ImageTk
 import os
 from Recommender import Recommender
@@ -165,11 +167,11 @@ class RecommenderGUI:
 
     def load_shows(self):
         self.recommender.loadShows()
-        movie = self.recommender.getMovieList() #str
+        movie = self.recommender.getMovieList()  #str
         # print(movie)
-        show = self.recommender.getTVList() #str
-        movie_stats = self.recommender.getMovieStats() #str
-        show_stats = self.recommender.getTVStats() #str
+        show = self.recommender.getTVList()  #str
+        movie_stats = self.recommender.getMovieStats()  #str
+        show_stats = self.recommender.getTVStats()  #str
         self.movie_stats_text.config(state=NORMAL)
         self.movie_list_text.config(state=NORMAL)
         self.show_list_text.config(state=NORMAL)
@@ -189,12 +191,42 @@ class RecommenderGUI:
         self.movie_list_text.config(state=DISABLED)
         self.show_list_text.config(state=DISABLED)
         self.show_stats_text.config(state=DISABLED)
+        data1 = self.recommender.getMovieRatingpercount()
+        data2 = self.recommender.getTVRatingpercount()
+        label1 = self.recommender.getMovieRating()
+        label2 = self.recommender.getTVRating()
+        pie_frame = ttk.Frame(self.notebook)
+        self.notebook.add(pie_frame, text='pie')
+        fig1 = Figure(figsize=(12,12), dpi=50)
+        ax1 = fig1.add_subplot(111)
+        ax1.pie(data1, labels=label1, autopct='%1.2f%%', startangle=140)
+        ax1.set_title("movie rating")
 
+        # Create a figure for the second pie chart
+        fig2 = Figure(figsize=(12, 12), dpi=50)
+        ax2 = fig2.add_subplot(111)
+        ax2.pie(data2, labels=label2, autopct='%1.2f%%', startangle=140)
+        ax2.set_title("tv rating")
+
+        # Function to draw matplotlib figures on Tkinter canvas
+        def draw_figure(canvas, figure):
+            figure_canvas_agg = FigureCanvasTkAgg(figure, canvas)
+            figure_canvas_agg.draw()
+            figure_canvas_agg.get_tk_widget().pack(side=LEFT)
+            return figure_canvas_agg
+
+        # Create the Tkinter canvas
+        canvas = Canvas(pie_frame, width=1200, height=500)
+        canvas.pack()
+
+        # Draw figures on the canvas
+        draw_figure(canvas, fig1)
+        draw_figure(canvas, fig2)
 
     def load_books(self):
         self.recommender.loadBooks()
-        book = self.recommender.getBookList() #str
-        book_stats = self.recommender.getBookStats() #str
+        book = self.recommender.getBookList()  #str
+        book_stats = self.recommender.getBookStats()  #str
 
         self.book_list_text.config(state=NORMAL)
         self.book_stats_text.config(state=NORMAL)
@@ -224,7 +256,7 @@ class RecommenderGUI:
         self.search_media_text.config(state=NORMAL)
 
         self.search_media_text.delete(1.0, END)
-        searched_media_list=self.recommender.searchTVMovie(media_type, title, director, actor, genre) #str
+        searched_media_list = self.recommender.searchTVMovie(media_type, title, director, actor, genre)  #str
         self.search_media_text.insert(INSERT, searched_media_list)
 
         self.search_media_text.config(state=DISABLED)
@@ -233,7 +265,7 @@ class RecommenderGUI:
         title = self.search_books_title.get()
         author = self.search_books_author.get()
         publisher = self.search_books_publisher.get()
-        searched_books_list = self.recommender.searchBooks(title, author, publisher) #str
+        searched_books_list = self.recommender.searchBooks(title, author, publisher)  #str
 
         self.search_books_text.config(state=NORMAL)
 
@@ -245,7 +277,7 @@ class RecommenderGUI:
     def search_recommend(self):
         type = self.search_type.get()
         title = self.search_title.get()
-        recommendations = self.recommender.getRecommendations(type, title) #str
+        recommendations = self.recommender.getRecommendations(type, title)  #str
 
         self.recommend_text.config(state=NORMAL)
 
