@@ -36,7 +36,7 @@ class Recommender:
         # and the Book object as the value
         # ▪ Close the file once all the data has been read in
         while True:
-            filename = filedialog.askopenfilename(initialdir=os.getcwd(), title="Select file")
+            filename = filedialog.askopenfilename(initialdir=os.getcwd(), title="Select Book file")
             if os.path.exists(filename):
                 break
         with open(filename, 'r') as file:
@@ -52,7 +52,7 @@ class Recommender:
         :return: nothing
         """
         while True:
-            filename = filedialog.askopenfilename(initialdir=os.getcwd(), title="Select file")
+            filename = filedialog.askopenfilename(initialdir=os.getcwd(), title="Select show file")
             if os.path.exists(filename):
                 break
         with open(filename, 'r') as file:
@@ -64,9 +64,10 @@ class Recommender:
 
     def loadAssociations(self):
         while True:
-            filename = filedialog.askopenfilename(initialdir=os.getcwd(), title="Select file")
+            filename = filedialog.askopenfilename(initialdir=os.getcwd(), title="Select associations file")
             if os.path.exists(filename):
                 break
+        # {id1: {id2: 1, id3: 2}, id2: {id1: 1, id3: 3}, id3: {id1: 2, id2: 3}}
         with open(filename, 'r') as file:
             for line in file:
                 line = line.strip().split(',')
@@ -92,7 +93,7 @@ class Recommender:
                         self.__associations[line[1]][line[0]] = 1
                     else:
                         self.__associations[line[1]][line[0]] += 1
-
+        # print(self.__associations)
     def getMovieList(self):
         """
         :return: string
@@ -337,37 +338,52 @@ class Recommender:
         return return_string
 
     def getRecommendations(self, type, title):
+        """
+        :param type:
+        :param title:
+        :return: string
+        """
         # ▪ If the type is Movie or TV Show, search through the shows dictionary and determine the
         # id associated with that title
-        id=''
-        if type == 'Movie' or type == 'TV Show':
-            for key in self.__shows:
-                # If the title is not in the dictionary, spawn a showwarning messagebox
-                # informing the user that there are no recommendations for that title, and return
-                # No results
-                if title == self.__shows[key].get_title():
-                    id = self.__shows[key].get_id()
-                    break
-            if id == '':
-                tkinter.messagebox.showwarning("Warning", "There are no recommendations for that title")
-                return "No Results"
-            output = ''
-            for book_id in self.__associations[id].keys():
-                for book in self.__books:
-                    if book_id == book.get_id():
-                        output += f"{self.__books[book].get_title()}\n"
-            return output
+        # self.__books look like {id1: Book object, id2: Book object, id3: Book object}
+        # self.__shows look like {id1: Show object, id2: Show object, id3: Show object}
+        # self.__associations look like {id1: {id2: 1, id3: 2}, id2: {id1: 1, id3: 3}, id3: {id1: 2, id2: 3}}
+        id = ''
+        output = ''
+        if type == 'Movie/TV Show':
+            # search through the shows dictionary and determine the id associated with that title
+            if title == '':
+                tkinter.messagebox.showerror("Error", "Please enter a title")
+                return "No Recommendations"
+            else:
+                for key in self.__shows:
+                    if title == self.__shows[key].get_title():
+                        id = key
+                        break
+                if id == '':
+                    tkinter.messagebox.showerror("Error", "No such title found")
+                    return "No Recommendations"
+
+                for key in self.__books:
+                    if self.__books[key].get_id() in self.__associations[id].keys():
+                        output += f"{self.__books[key]}\n"
+                return output
         if type == 'Book':
-            for key in self.__books:
-                if title == self.__books[key].get_title():
-                    id = self.__books[key].get_id()
-                    break
-            if id == '':
-                tkinter.messagebox.showwarning("Warning", "There are no recommendations for that title")
-                return "No Results"
-            output = ''
-            for show_id in self.__associations[id].keys():
-                for show in self.__shows:
-                    if show_id == show.get_id():
-                        output += f"{self.__shows[show].get_title()}\n"
-            return output
+            if title == '':
+                tkinter.messagebox.showerror("Error", "Please enter a title")
+                return "No Recommendations"
+            else:
+                for key in self.__books:
+                    if title == self.__books[key].get_title():
+                        id = key
+                        break
+                if id == '':
+                    tkinter.messagebox.showerror("Error", "No such title found")
+                    return "No Recommendations"
+                for key in self.__shows:
+                    if self.__shows[key].get_id() in self.__associations[id].keys():
+                        output += f"{self.__shows[key]}\n"
+                return output
+
+        if type == "":
+            tkinter.messagebox.showerror("Error", "Please select Movie/TV Show or Book")
