@@ -305,13 +305,9 @@ class Recommender:
             director_list.append(show.get_directors())
             actor_list.append(show.get_actors())
             genre_list.append(show.get_genres())
-        longest_title = max(title_list, key=len)
-        longest_director = max(director_list, key=len)
-        longest_actor = max(actor_list, key=len)
-        longest_genre = max(genre_list, key=len)
-        return_string += f"{'Title':<{longest_title}}{'Director':<{longest_director}}{'Actor':<{longest_actor}}{'Genre':<{longest_genre}}\n"
+        return_string += f"{'Title'}{'Director'}{'Actor'}{'Genre'}\n"
         for i in range(len(title_list)):
-            return_string += f"{title_list[i]:<{longest_title}}{director_list[i]:<{longest_director}}{actor_list[i]:<{longest_actor}}{genre_list[i]:<{longest_genre}}\n"
+            return_string += f"{title_list[i]}{director_list[i]}{actor_list[i]}{genre_list[i]}\n"
         return return_string
 
     def searchBooks(self, title, author, publisher):
@@ -335,12 +331,9 @@ class Recommender:
             title_list.append(book.get_title())
             author_list.append(book.get_authors())
             publisher_list.append(book.get_publisher())
-        longest_title = max(title_list, key=len)
-        longest_author = max(author_list, key=len)
-        longest_publisher = max(publisher_list, key=len)
-        return_string += f"{'Title':<{longest_title}}{'Author':<{longest_author}}{'Publisher':<{longest_publisher}}\n"
+        return_string += f"{'Title'}{'Author'}{'Publisher'}\n"
         for i in range(len(title_list)):
-            return_string += f"{title_list[i]:<{longest_title}}{author_list[i]:<{longest_author}}{publisher_list[i]:<{longest_publisher}}\n"
+            return_string += f"{title_list[i]}{author_list[i]}{publisher_list[i]}\n"
         return return_string
 
     def getRecommendations(self, type, title):
