@@ -6,7 +6,7 @@ from Media import Media
 
 
 class Book(Media):
-    def __init__(self, id, title, average_rating, authors, isbn, isbn13, language_code, num_pages, ratings_count, publication_date, publisher):
+    def __init__(self, id, title, authors, average_rating, isbn, isbn13, language_code, num_pages, ratings_count, publication_date, publisher):
         super().__init__(id, title, average_rating)
         self.__authors = authors
         self.__isbn = isbn
@@ -65,4 +65,15 @@ class Book(Media):
     def set_publisher(self, publisher):
         self.__publisher = publisher
 
-
+    def __str__(self):
+        output = 'Title: \n' + self.get_title() + '\n'
+        output += 'Authors: \n' + self.get_authors() + '\n'
+        output += 'Average Rating: \n' + str(self.get_average_rating()) + '\n'
+        output += 'ISBN: \n' + self.get_isbn() + '\n'
+        output += 'ISBN13: \n' + self.get_isbn13() + '\n'
+        output += 'Language Code: \n' + self.get_language_code() + '\n'
+        output += 'Number of Pages: \n' + str(self.get_num_pages()) + '\n'
+        output += 'Ratings Count: \n' + str(self.get_ratings_count()) + '\n'
+        output += 'Publication Date: \n' + self.get_publication_date() + '\n'
+        output += 'Publisher: \n' + self.get_publisher() + '\n'
+        return output

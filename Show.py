@@ -6,7 +6,7 @@ from Media import Media
 
 
 class Show(Media):
-    def __init__(self, id, title, average_rating, type, directors, actors, country, date_added, release_year, rating, duration, genres, description):
+    def __init__(self, id, type, title, directors, actors, average_rating, country, date_added, release_year, rating, duration, genres, description):
         super().__init__(id, title, average_rating)
         self.__type = type
         self.__directors = directors
@@ -78,3 +78,18 @@ class Show(Media):
 
     def set_description(self, description):
         self.__description = description
+
+    def __str__(self):
+        output = 'type: \n' + self.get_type() + '\n'
+        output += 'title: \n' + self.get_title() + '\n'
+        output += 'directors: \n' + self.get_directors() + '\n'
+        output += 'actors: \n' + self.get_actors() + '\n'
+        output += 'average_rating: \n' + self.get_average_rating() + '\n'
+        output += 'country: \n' + self.get_country() + '\n'
+        output += 'date_added: \n' + self.get_date_added() + '\n'
+        output += 'release_year: \n' + self.get_release_year() + '\n'
+        output += 'rating: \n' + self.get_rating() + '\n'
+        output += 'duration: \n' + self.get_duration() + '\n'
+        output += 'genres: \n' + self.get_genres() + '\n'
+        output += 'description: \n' + self.get_description() + '\n'
+        return output
