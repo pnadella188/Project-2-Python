@@ -146,10 +146,11 @@ class Recommender:
             if self.__shows[key].get_type() == 'Movie':
                 count += 1
                 duration += int(self.__shows[key].get_duration()[0:-4])
-                if self.__shows[key].get_rating() not in rate_dict:
-                    rate_dict[self.__shows[key].get_rating()] = 1
-                else:
-                    rate_dict[self.__shows[key].get_rating()] += 1
+                if self.__shows[key].get_rating() != '':
+                    if self.__shows[key].get_rating() not in rate_dict:
+                        rate_dict[self.__shows[key].get_rating()] = 1
+                    else:
+                        rate_dict[self.__shows[key].get_rating()] += 1
                 director = self.__shows[key].get_directors()
                 if director != '':
                 # print(director)
@@ -176,7 +177,7 @@ class Recommender:
         output = ""
         output += "Ratings:\n"
         for key in rate_dict:
-            output += f"Rating: {key} {rate_dict[key] / count * 100:.2f}%\n"
+            output += f"{key} {rate_dict[key] / count * 100:.2f}%\n"
         output += f"Average Duration: {duration / count}\n"
         output += f"Most Prolific Director: {max(director_dict, key=director_dict.get)}\n"
         output += f"Most Prolific Actor: {max(actor_dict, key=actor_dict.get)}\n"
@@ -199,10 +200,11 @@ class Recommender:
                 count += 1
                 # 1 Season
                 duration += int(self.__shows[key].get_duration()[0:-7])
-                if self.__shows[key].get_rating() not in rate_dict:
-                    rate_dict[self.__shows[key].get_rating()] = 1
-                else:
-                    rate_dict[self.__shows[key].get_rating()] += 1
+                if self.__shows[key].get_rating() != '':
+                    if self.__shows[key].get_rating() not in rate_dict:
+                        rate_dict[self.__shows[key].get_rating()] = 1
+                    else:
+                        rate_dict[self.__shows[key].get_rating()] += 1
                 actor = self.__shows[key].get_actors()
                 if actor != '':
                     for a in actor.split('\\'):
@@ -220,7 +222,7 @@ class Recommender:
         output = ""
         output += "Ratings:\n"
         for key in rate_dict:
-            output += f"Rating: {key} {rate_dict[key] / count * 100:.2f}%\n"
+            output += f"{key} {rate_dict[key] / count * 100:.2f}%\n"
         output += f"Average Duration: {duration / count}\n"
         output += f"Most Prolific Actor: {max(actor_dict, key=actor_dict.get)}\n"
         output += f"Most Popular Genre: {max(genre_dict, key=genre_dict.get)}\n"
