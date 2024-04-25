@@ -47,6 +47,10 @@ class Recommender:
                                              line[8], line[9], line[10])
 
     def loadShows(self):
+        """
+        Prompts the user for the name of the file using an appropriate filedialog, and if the
+        :return: nothing
+        """
         while True:
             filename = filedialog.askopenfilename(initialdir=os.getcwd(), title="Select file")
             if os.path.exists(filename):
@@ -54,9 +58,9 @@ class Recommender:
         with open(filename, 'r') as file:
             file.readline()
             for line in file:
-                line = line.strip().split(',')
+                line = line.strip().split(',', 12)
                 self.__shows[line[0]] = Show(line[0], line[1], line[2], line[3], line[4], line[5], line[6], line[7],
-                                             line[8], line[9], line[10], line[11])
+                                             line[8], line[9], line[10], line[11], line[12])
 
     def loadAssociations(self):
         while True:
@@ -90,6 +94,9 @@ class Recommender:
                         self.__associations[line[1]][line[0]] += 1
 
     def getMovieList(self):
+        """
+        :return: string
+        """
         return_string = ''
         title_list = []
         duration_list = []
@@ -97,11 +104,9 @@ class Recommender:
             if self.__shows[key].get_type() == 'Movie':
                 title_list.append(self.__shows[key].get_title())
                 duration_list.append(self.__shows[key].get_duration())
-        longest_title = max(title_list, key=len)
-        longest_duration = max(duration_list, key=len)
-        return_string += f"{'Title':<{longest_title}}{'Duration':<{longest_duration}}\n"
+        return_string += f"{'Title'}{'Duration'}\n"
         for i in range(len(title_list)):
-            return_string += f"{title_list[i]:<{longest_title}}{duration_list[i]:<{longest_duration}}\n"
+            return_string += f"{title_list[i]}{duration_list[i]}\n"
         return return_string
 
     def getTVList(self):
@@ -112,11 +117,9 @@ class Recommender:
             if self.__shows[key].get_type() == 'TV Show':
                 title_list.append(self.__shows[key].get_title())
                 duration_list.append(self.__shows[key].get_duration())
-        longest_title = max(title_list, key=len)
-        longest_duration = max(duration_list, key=len)
-        return_string += f"{'Title':<{longest_title}}{'Duration':<{longest_duration}}\n"
+        return_string += f"{'Title'}{'Duration'}\n"
         for i in range(len(title_list)):
-            return_string += f"{title_list[i]:<{longest_title}}{duration_list[i]:<{longest_duration}}\n"
+            return_string += f"{title_list[i]}{duration_list[i]}\n"
         return return_string
 
     def getBookList(self):
@@ -126,11 +129,9 @@ class Recommender:
         for key in self.__books:
             title_list.append(self.__books[key].get_title())
             num_pages_list.append(self.__books[key].get_num_pages())
-        longest_title = max(title_list, key=len)
-        longest_num_pages = max(num_pages_list, key=len)
-        return_string += f"{'Title':<{longest_title}}{'Num Pages':<{longest_num_pages}}\n"
+        return_string += f"{'Title'}{'Num Pages'}\n"
         for i in range(len(title_list)):
-            return_string += f"{title_list[i]:<{longest_title}}{num_pages_list[i]:<{longest_num_pages}}\n"
+            return_string += f"{title_list[i]}{num_pages_list[i]}\n"
         return return_string
 
     def getMovieStats(self):
@@ -148,19 +149,24 @@ class Recommender:
                     rate_dict[self.__shows[key].get_rating()] = 1
                 else:
                     rate_dict[self.__shows[key].get_rating()] += 1
-                for director in self.__shows[key].get_directors():
-                    for d in director.split('\\'):
+                director = self.__shows[key].get_directors()
+                if director != '':
+                # print(director)
+                    for d in director.strip().split('\\'):
+                        # print(d)
                         if d not in director_dict:
                             director_dict[d] = 1
                         else:
                             director_dict[d] += 1
-                for actor in self.__shows[key].get_actors():
+                actor = self.__shows[key].get_actors()
+                if actor != '':
                     for a in actor.split('\\'):
                         if a not in actor_dict:
                             actor_dict[a] = 1
                         else:
                             actor_dict[a] += 1
-                for genre in self.__shows[key].get_genres():
+                genre = self.__shows[key].get_genres()
+                if genre != '':
                     for g in genre.split('\\'):
                         if g not in genre_dict:
                             genre_dict[g] = 1
@@ -196,13 +202,15 @@ class Recommender:
                     rate_dict[self.__shows[key].get_rating()] = 1
                 else:
                     rate_dict[self.__shows[key].get_rating()] += 1
-                for actor in self.__shows[key].get_actors():
+                actor = self.__shows[key].get_actors()
+                if actor != '':
                     for a in actor.split('\\'):
                         if a not in actor_dict:
                             actor_dict[a] = 1
                         else:
                             actor_dict[a] += 1
-                for genre in self.__shows[key].get_genres():
+                genre = self.__shows[key].get_genres()
+                if genre != '':
                     for g in genre.split('\\'):
                         if g not in genre_dict:
                             genre_dict[g] = 1
@@ -225,16 +233,20 @@ class Recommender:
         author_dict = {}
         publisher_dict = {}
         for key in self.__books:
-            page_count += self.__books[key].get_num_pages()
-            for author in self.__books[key].get_authors():
-                if author not in author_dict:
-                    author_dict[author] = 1
+            page_count += int(self.__books[key].get_num_pages())
+            author = self.__books[key].get_authors()
+            if author != '':
+                for author in author.split('\\'):
+                    if author not in author_dict:
+                        author_dict[author] = 1
+                    else:
+                        author_dict[author] += 1
+            publisher = self.__books[key].get_publisher()
+            if publisher != '':
+                if publisher not in publisher_dict:
+                    publisher_dict[publisher] = 1
                 else:
-                    author_dict[author] += 1
-            if self.__books[key].get_publisher() not in publisher_dict:
-                publisher_dict[self.__books[key].get_publisher()] = 1
-            else:
-                publisher_dict[self.__books[key].get_publisher()] += 1
+                    publisher_dict[publisher] += 1
         output = ""
         output += f"Average Page Count: {page_count / len(self.__books):.2f}\n"
         output += f"Most Prolific Author: {max(author_dict, key=author_dict.get)}\n"
@@ -242,6 +254,14 @@ class Recommender:
         return output
 
     def searchTVMovie(self, type, title, director, actor, genre):
+        """
+        :param type:
+        :param title:
+        :param director:
+        :param actor:
+        :param genre:
+        :return: return_string
+        """
         result_list = []
         if type == 'TV Show':
             pass

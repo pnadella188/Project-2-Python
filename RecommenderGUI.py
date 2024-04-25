@@ -114,7 +114,7 @@ class RecommenderGUI:
         self.search_area.pack()
         self.result_area.pack(expand=True, fill='both')
 
-        # recomender tab
+        # recommender tab
         self.recommend_frame = ttk.Frame(self.notebook)
         self.notebook.add(self.recommend_frame, text='Recommendations')
         self.search_area = ttk.Frame(self.recommend_frame)
@@ -155,25 +155,64 @@ class RecommenderGUI:
         self.root.mainloop()
 
     def load_shows(self):
-        pass
+        self.recommender.loadShows()
+        movie = self.recommender.getMovieList() #str
+        # print(movie)
+        show = self.recommender.getTVList() #str
+        movie_stats = self.recommender.getMovieStats() #str
+        show_stats = self.recommender.getTVStats() #str
+        self.movie_list_text.delete(1.0, END)
+        self.show_list_text.delete(1.0, END)
+        self.movie_stats_text.delete(1.0, END)
+        self.show_stats_text.delete(1.0, END)
+        self.movie_list_text.insert(INSERT, movie)
+        self.show_list_text.insert(INSERT, show)
+        self.movie_stats_text.insert(INSERT, movie_stats)
+        self.show_stats_text.insert(INSERT, show_stats)
 
     def load_books(self):
-        pass
+        self.recommender.loadBooks()
+        book = self.recommender.getBookList() #str
+        book_stats = self.recommender.getBookStats() #str
+        self.book_list_text.delete(1.0, END)
+        self.book_stats_text.delete(1.0, END)
+        self.book_list_text.insert(INSERT, book)
+        self.book_stats_text.insert(INSERT, book_stats)
 
     def load_recommendations(self):
-        pass
+        self.recommender.loadAssociations()
 
     def show_info(self):
         messagebox.showinfo('Info', 'This is a recommender system')
 
     def search_media(self):
-        pass
+        media_type = self.search_media_type.get()
+        title = self.search_media_title.get()
+        director = self.search_media_director.get()
+        actor = self.search_media_actor.get()
+        genre = self.search_media_genre.get()
+        self.search_media_text.delete(1.0, END)
+        self.search_media_text.insert(INSERT, 'Searched Media List\n')
+        searched_media_list=self.recommender.searchTVMovie(media_type, title, director, actor, genre) #str
+        self.search_media_text.insert(INSERT, searched_media_list)
+
 
     def search_books(self):
-        pass
+        title = self.search_books_title.get()
+        author = self.search_books_author.get()
+        publisher = self.search_books_publisher.get()
+        searched_books_list = self.recommender.searchBooks(title, author, publisher) #str
+        self.search_books_text.delete(1.0, END)
+        self.search_books_text.insert(INSERT, 'Searched Books List\n')
+        self.search_books_text.insert(INSERT, searched_books_list)
 
     def search_recommend(self):
-        pass
+        type = self.search_type.get()
+        title = self.search_title.get()
+        recommendations = self.recommender.getRecommendations(type, title) #str
+        self.recommend_text.delete(1.0, END)
+        self.recommend_text.insert(INSERT, 'Recommendations\n')
+        self.recommend_text.insert(INSERT, recommendations)
 
 
 def main():
