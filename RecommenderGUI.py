@@ -30,30 +30,36 @@ class RecommenderGUI:
         self.movie_frame = ttk.Frame(self.notebook)
         self.notebook.add(self.movie_frame, text='Movies')
         self.movie_list_text = ScrolledText(self.movie_frame, wrap=WORD)
-        self.movie_list_text.insert(INSERT, 'Movie List\n')
+        self.movie_list_text.insert(INSERT, 'default text informing the user that no data has been loaded yet\n')
+        self.movie_list_text.config(state=DISABLED)
         self.movie_list_text.pack(expand=True, fill='both')
         self.movie_stats_text = ScrolledText(self.movie_frame, wrap=WORD)
-        self.movie_stats_text.insert(INSERT, 'Movie Stats\n')
+        self.movie_stats_text.insert(INSERT, 'default text informing the user that no data has been loaded yet\n')
+        self.movie_stats_text.config(state=DISABLED)
         self.movie_stats_text.pack(expand=True, fill='both')
 
         # Show tab
         self.show_frame = ttk.Frame(self.notebook)
         self.notebook.add(self.show_frame, text='Shows')
         self.show_list_text = ScrolledText(self.show_frame, wrap=WORD)
-        self.show_list_text.insert(INSERT, 'Show List\n')
+        self.show_list_text.insert(INSERT, 'default text informing the user that no data has been loaded yet\n')
+        self.show_list_text.config(state=DISABLED)
         self.show_list_text.pack(expand=True, fill='both')
         self.show_stats_text = ScrolledText(self.show_frame, wrap=WORD)
-        self.show_stats_text.insert(INSERT, 'Show Stats\n')
+        self.show_stats_text.insert(INSERT, 'default text informing the user that no data has been loaded yet\n')
+        self.show_stats_text.config(state=DISABLED)
         self.show_stats_text.pack(expand=True, fill='both')
 
         # Book tab
         self.book_frame = ttk.Frame(self.notebook)
         self.notebook.add(self.book_frame, text='Books')
         self.book_list_text = ScrolledText(self.book_frame, wrap=WORD)
-        self.book_list_text.insert(INSERT, 'Book List\n')
+        self.book_list_text.insert(INSERT, 'default text informing the user that no data has been loaded yet\n')
+        self.book_list_text.config(state=DISABLED)
         self.book_list_text.pack(expand=True, fill='both')
         self.book_stats_text = ScrolledText(self.book_frame, wrap=WORD)
-        self.book_stats_text.insert(INSERT, 'Book Stats\n')
+        self.book_stats_text.insert(INSERT, 'default text informing the user that no data has been loaded yet\n')
+        self.book_stats_text.config(state=DISABLED)
         self.book_stats_text.pack(expand=True, fill='both')
 
         # search movies or tv tab
@@ -62,7 +68,8 @@ class RecommenderGUI:
         self.search_area = ttk.Frame(self.search_media_frame)
         self.result_area = ttk.Frame(self.search_media_frame)
         self.search_media_text = ScrolledText(self.result_area, wrap=WORD)
-        self.search_media_text.insert(INSERT, 'Searched Media List\n')
+        self.search_media_text.insert(INSERT, 'default text informing the user that no data has been loaded yet\n')
+        self.search_media_text.config(state=DISABLED)
         self.search_media_type_label = Label(self.search_area, text='Media Type')
         self.search_media_type_label.grid(row=0, column=0)
         self.search_media_type = Combobox(self.search_area, values=['Movie', 'TV Show'])
@@ -109,7 +116,8 @@ class RecommenderGUI:
         self.search_books_button = Button(self.search_area, text='Search Books', command=self.search_books)
         self.search_books_button.grid(row=3, column=0, columnspan=2)
         self.search_books_text = ScrolledText(self.result_area, wrap=WORD)
-        self.search_books_text.insert(INSERT, 'Searched Books List\n')
+        self.search_books_text.insert(INSERT, 'default text informing the user that no data has been loaded yet\n')
+        self.search_books_text.config(state=DISABLED)
         self.search_books_text.pack(expand=True, fill='both')
         self.search_area.pack()
         self.result_area.pack(expand=True, fill='both')
@@ -130,7 +138,8 @@ class RecommenderGUI:
         self.search_recommend_button.grid(row=2, column=0, columnspan=2)
         self.result_area = ttk.Frame(self.recommend_frame)
         self.recommend_text = ScrolledText(self.result_area, wrap=WORD)
-        self.recommend_text.insert(INSERT, 'Recommendations\n')
+        self.recommend_text.insert(INSERT, 'default text informing the user that no data has been loaded yet\n')
+        self.recommend_text.config(state=DISABLED)
         self.recommend_text.pack(expand=True, fill='both')
         self.search_area.pack()
         self.result_area.pack(expand=True, fill='both')
@@ -161,23 +170,43 @@ class RecommenderGUI:
         show = self.recommender.getTVList() #str
         movie_stats = self.recommender.getMovieStats() #str
         show_stats = self.recommender.getTVStats() #str
+        self.movie_stats_text.config(state=NORMAL)
+        self.movie_list_text.config(state=NORMAL)
+        self.show_list_text.config(state=NORMAL)
+        self.show_stats_text.config(state=NORMAL)
+
         self.movie_list_text.delete(1.0, END)
         self.show_list_text.delete(1.0, END)
         self.movie_stats_text.delete(1.0, END)
         self.show_stats_text.delete(1.0, END)
+
         self.movie_list_text.insert(INSERT, movie)
         self.show_list_text.insert(INSERT, show)
         self.movie_stats_text.insert(INSERT, movie_stats)
         self.show_stats_text.insert(INSERT, show_stats)
 
+        self.movie_stats_text.config(state=DISABLED)
+        self.movie_list_text.config(state=DISABLED)
+        self.show_list_text.config(state=DISABLED)
+        self.show_stats_text.config(state=DISABLED)
+
+
     def load_books(self):
         self.recommender.loadBooks()
         book = self.recommender.getBookList() #str
         book_stats = self.recommender.getBookStats() #str
+
+        self.book_list_text.config(state=NORMAL)
+        self.book_stats_text.config(state=NORMAL)
+
         self.book_list_text.delete(1.0, END)
         self.book_stats_text.delete(1.0, END)
+
         self.book_list_text.insert(INSERT, book)
         self.book_stats_text.insert(INSERT, book_stats)
+
+        self.book_list_text.config(state=DISABLED)
+        self.book_stats_text.config(state=DISABLED)
 
     def load_recommendations(self):
         self.recommender.loadAssociations()
@@ -191,28 +220,39 @@ class RecommenderGUI:
         director = self.search_media_director.get()
         actor = self.search_media_actor.get()
         genre = self.search_media_genre.get()
+
+        self.search_media_text.config(state=NORMAL)
+
         self.search_media_text.delete(1.0, END)
-        self.search_media_text.insert(INSERT, 'Searched Media List\n')
         searched_media_list=self.recommender.searchTVMovie(media_type, title, director, actor, genre) #str
         self.search_media_text.insert(INSERT, searched_media_list)
 
+        self.search_media_text.config(state=DISABLED)
 
     def search_books(self):
         title = self.search_books_title.get()
         author = self.search_books_author.get()
         publisher = self.search_books_publisher.get()
         searched_books_list = self.recommender.searchBooks(title, author, publisher) #str
+
+        self.search_books_text.config(state=NORMAL)
+
         self.search_books_text.delete(1.0, END)
-        self.search_books_text.insert(INSERT, 'Searched Books List\n')
         self.search_books_text.insert(INSERT, searched_books_list)
+
+        self.search_books_text.config(state=DISABLED)
 
     def search_recommend(self):
         type = self.search_type.get()
         title = self.search_title.get()
         recommendations = self.recommender.getRecommendations(type, title) #str
+
+        self.recommend_text.config(state=NORMAL)
+
         self.recommend_text.delete(1.0, END)
-        self.recommend_text.insert(INSERT, 'Recommendations\n')
         self.recommend_text.insert(INSERT, recommendations)
+
+        self.recommend_text.config(state=DISABLED)
 
 
 def main():

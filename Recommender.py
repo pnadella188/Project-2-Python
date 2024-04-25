@@ -94,6 +94,7 @@ class Recommender:
                     else:
                         self.__associations[line[1]][line[0]] += 1
         # print(self.__associations)
+
     def getMovieList(self):
         """
         :return: string
@@ -105,9 +106,11 @@ class Recommender:
             if self.__shows[key].get_type() == 'Movie':
                 title_list.append(self.__shows[key].get_title())
                 duration_list.append(self.__shows[key].get_duration())
-        return_string += f"{'Title'}{'Duration'}\n"
+        max_len1 = max([len(title) for title in title_list])
+        max_len2 = max([len(duration) for duration in duration_list])
+        return_string += f"{'Title'.ljust(max_len1)}{'Duration'.ljust(max_len2)}\n"
         for i in range(len(title_list)):
-            return_string += f"{title_list[i]}{duration_list[i]}\n"
+            return_string += f"{title_list[i].ljust(max_len1)}{duration_list[i].ljust(max_len2)}\n"
         return return_string
 
     def getTVList(self):
@@ -118,9 +121,11 @@ class Recommender:
             if self.__shows[key].get_type() == 'TV Show':
                 title_list.append(self.__shows[key].get_title())
                 duration_list.append(self.__shows[key].get_duration())
-        return_string += f"{'Title'}{'Duration'}\n"
+        max_len1 = max([len(title) for title in title_list])
+        max_len2 = max([len(duration) for duration in duration_list])
+        return_string += f"{'Title'.ljust(max_len1)}{'Duration'.ljust(max_len2)}\n"
         for i in range(len(title_list)):
-            return_string += f"{title_list[i]}{duration_list[i]}\n"
+            return_string += f"{title_list[i].ljust(max_len1)}{duration_list[i].ljust(max_len2)}\n"
         return return_string
 
     def getBookList(self):
@@ -130,9 +135,11 @@ class Recommender:
         for key in self.__books:
             title_list.append(self.__books[key].get_title())
             num_pages_list.append(self.__books[key].get_num_pages())
-        return_string += f"{'Title'}{'Num Pages'}\n"
+        max_len1 = max([len(title) for title in title_list])
+        max_len2 = max([len(num_pages) for num_pages in num_pages_list])
+        return_string += f"{'Title'.ljust(max_len1)}{'Num Pages'.ljust(max_len2)}\n"
         for i in range(len(title_list)):
-            return_string += f"{title_list[i]}{num_pages_list[i]}\n"
+            return_string += f"{title_list[i].ljust(max_len1)}{num_pages_list[i].ljust(max_len2)}\n"
         return return_string
 
     def getMovieStats(self):
@@ -153,7 +160,7 @@ class Recommender:
                         rate_dict[self.__shows[key].get_rating()] += 1
                 director = self.__shows[key].get_directors()
                 if director != '':
-                # print(director)
+                    # print(director)
                     for d in director.strip().split('\\'):
                         # print(d)
                         if d not in director_dict:
@@ -280,7 +287,8 @@ class Recommender:
         # showerror messagebox and inform the user the need to enter information for the
         # Title, Directory, Actor and/or Genre first, and return the string No Results
         if title == '' and director == '' and actor == '' and genre == '':
-            tkinter.messagebox.showerror("Error", "Please enter information for the Title, Director, Actor and/or Genre first")
+            tkinter.messagebox.showerror("Error",
+                                         "Please enter information for the Title, Director, Actor and/or Genre first")
             return "No Results"
         # Otherwise, search through the dictionary of shows and select all objects that adhere to
         # the user’s data
@@ -308,15 +316,20 @@ class Recommender:
             director_list.append(show.get_directors())
             actor_list.append(show.get_actors())
             genre_list.append(show.get_genres())
-        return_string += f"{'Title'}{'Director'}{'Actor'}{'Genre'}\n"
+        max_len1 = max([len(title) for title in title_list])
+        max_len2 = max([len(director) for director in director_list])
+        max_len3 = max([len(actor) for actor in actor_list])
+        max_len4 = max([len(genre) for genre in genre_list])
+        return_string += f"{'Title'.ljust(max_len1)}{'Director'.ljust(max_len2)}{'Actor'.ljust(max_len3)}{'Genre'.ljust(max_len4)}\n"
         for i in range(len(title_list)):
-            return_string += f"{title_list[i]}{director_list[i]}{actor_list[i]}{genre_list[i]}\n"
+            return_string += f"{title_list[i].ljust(max_len1)}{director_list[i].ljust(max_len2)}{actor_list[i].ljust(max_len3)}{genre_list[i].ljust(max_len4)}\n"
         return return_string
 
     def searchBooks(self, title, author, publisher):
         result_list = []
         if title == '' and author == '' and publisher == '':
-            tkinter.messagebox.showerror("Error", "Please enter information for the Title, Author and/or Publisher first")
+            tkinter.messagebox.showerror("Error",
+                                         "Please enter information for the Title, Author and/or Publisher first")
             return "No Results"
         for key in self.__books:
             if title != '' and title.lower() not in self.__books[key].get_title().lower():
@@ -334,9 +347,12 @@ class Recommender:
             title_list.append(book.get_title())
             author_list.append(book.get_authors())
             publisher_list.append(book.get_publisher())
-        return_string += f"{'Title'}{'Author'}{'Publisher'}\n"
+        max_len1 = max([len(title) for title in title_list])
+        max_len2 = max([len(author) for author in author_list])
+        max_len3 = max([len(publisher) for publisher in publisher_list])
+        return_string += f"{'Title'.ljust(max_len1)}{'Author'.ljust(max_len2)}{'Publisher'.ljust(max_len3)}\n"
         for i in range(len(title_list)):
-            return_string += f"{title_list[i]}{author_list[i]}{publisher_list[i]}\n"
+            return_string += f"{title_list[i].ljust(max_len1)}{author_list[i].ljust(max_len2)}{publisher_list[i].ljust(max_len3)}\n"
         return return_string
 
     def getRecommendations(self, type, title):
@@ -389,3 +405,4 @@ class Recommender:
 
         if type == "":
             tkinter.messagebox.showerror("Error", "Please select Movie/TV Show or Book")
+            return "No Recommendations"
