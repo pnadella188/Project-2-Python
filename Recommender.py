@@ -19,8 +19,11 @@ class Recommender:
     # • For the inner dictionary, the key should be a show or book id and the value is the
     # number of times the outer id and inner id are associated
     def __init__(self):
+        # {id1: Book object, id2: Book object, id3: Book object}
         self.__books = {}
+        # {id1: Show object, id2: Show object, id3: Show object}
         self.__shows = {}
+        # {id1: {id2: 1, id3: 2}, id2: {id1: 1, id3: 3}, id3: {id1: 2, id2: 3}}
         self.__associations = {}
 
     def loadBooks(self):

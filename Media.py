@@ -4,6 +4,11 @@
 
 class Media:
     def __init__(self, id, title, average_rating):
+        """
+        :param id:
+        :param title:
+        :param average_rating:
+        """
         self._id = id
         self._title = title
         self._average_rating = average_rating

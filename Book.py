@@ -6,7 +6,21 @@ from Media import Media
 
 
 class Book(Media):
-    def __init__(self, id, title, authors, average_rating, isbn, isbn13, language_code, num_pages, ratings_count, publication_date, publisher):
+    def __init__(self, id, title, authors, average_rating, isbn, isbn13, language_code, num_pages, ratings_count,
+                 publication_date, publisher):
+        """
+        :param id:
+        :param title:
+        :param authors:
+        :param average_rating:
+        :param isbn:
+        :param isbn13:
+        :param language_code:
+        :param num_pages:
+        :param ratings_count:
+        :param publication_date:
+        :param publisher:
+        """
         super().__init__(id, title, average_rating)
         self.__authors = authors
         self.__isbn = isbn

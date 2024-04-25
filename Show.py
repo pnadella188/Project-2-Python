@@ -6,7 +6,23 @@ from Media import Media
 
 
 class Show(Media):
-    def __init__(self, id, type, title, directors, actors, average_rating, country, date_added, release_year, rating, duration, genres, description):
+    def __init__(self, id, type, title, directors, actors, average_rating, country, date_added, release_year, rating,
+                 duration, genres, description):
+        """
+        :param id:
+        :param type:
+        :param title:
+        :param directors:
+        :param actors:
+        :param average_rating:
+        :param country:
+        :param date_added:
+        :param release_year:
+        :param rating:
+        :param duration:
+        :param genres:
+        :param description:
+        """
         super().__init__(id, title, average_rating)
         self.__type = type
         self.__directors = directors
