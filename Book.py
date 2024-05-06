@@ -1,4 +1,4 @@
-# author: Yifan Mao
+# author: Yifan Mao,Praneeth Nadella
 # date: 4/24/2024
 # Book class for project2 subclass of Media
 
